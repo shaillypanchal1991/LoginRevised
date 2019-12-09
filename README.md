@@ -1,3 +1,5 @@
+Please navigate to Releases Tab for the PPT of the approach .
+
 # LoginRevised
 
 Flexible , Configurable , Easy to plug Login Kit Library Version 1.5
