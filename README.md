@@ -18,8 +18,9 @@ Integration Steps
 	}
 
 2.    Add the dependency 
-         dependencies {
-	        implementation 'com.github.shaillypanchal1991:CustomizableLogin:1.1'
+
+	    	 dependencies {
+	      implementation 'com.github.shaillypanchal1991:LoginRevised:1.1'
 	}
 
 Steps to integrate 
