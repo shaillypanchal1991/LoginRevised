@@ -1,8 +1,8 @@
 Please navigate to Releases Tab for the PPT of the approach .
 
-# LoginRevised
+# LoginRevised - Approch 2 (Newer Approach)
 
-Flexible , Configurable , Easy to plug Login Kit Library Version 1.5
+Flexible , Configurable , Easy to plug Login Kit Library Version 1.1
 
 Min SDK API Version  :24
 
@@ -19,7 +19,7 @@ Integration Steps
 
 2.    Add the dependency 
          dependencies {
-	        implementation 'com.github.shaillypanchal1991:CustomizableLogin:1.5'
+	        implementation 'com.github.shaillypanchal1991:CustomizableLogin:1.1'
 	}
 
 Steps to integrate 
