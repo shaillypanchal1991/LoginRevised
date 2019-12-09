@@ -1,6 +1,6 @@
 Please navigate to Releases Tab for the PPT of the approach .
 
-# LoginRevised - Approch 2 (Newer Approach)
+# LoginRevised - Approach 2 (Newer Approach)
 
 Flexible , Configurable , Easy to plug Login Kit Library Version 1.1
 
