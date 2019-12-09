@@ -65,8 +65,12 @@ RequestType.LOGIN_WITH_CREDENTIALS,
 Implement interface CallbackHelper.GenericCallbacks 
 
 
-Receive following callbacks : 
-@Override
+Receive following callbacks 
+
+
+
+ 
+    @Override
     public void onLoginSuccess(Login liveData) {
         
         accesstoken=liveData.getAccessToken();
@@ -80,7 +84,81 @@ Receive following callbacks :
     public void onLoginFailure(CustomException apiException) {
         
     }
-SImilarly we can call other methods of CallbackManager for loading profiles,refresh token and profile login.
+    
+
+When user has successfully logged in, you can all the load profiles funtion and receive the profile success/failure callbacks
+
+
+     @Override
+    public void onProfileSuccess(List<Profile> lstProfiles) {
+
+        populateData(lstProfiles);
+    }
+
+    @Override
+    public void onProfileFailure(CustomException apiException) {
+
+        if (NetworkUtils.isNetworkConnected(this)) {
+            ShellApplication.getCommonListener().refreshToken(this, RequestType.REFRESH_TOKEN, DataStore.getInstance().fetchUserSessionDetails().getRefreshToken());
+        } else {
+            Toast.makeText(this, "You are not connected to internet ", Toast.LENGTH_SHORT).show();
+        }
+    }
+    
+
+In case of profile Fetch Failure, user can call refreshToken to renew the expired token .Following is the callback received .
+
+	 @Override
+    public void onRefreshTokenFailure(CustomException apiException) {
+
+        Toast.makeText(this,"There seems to be some error",Toast.LENGTH_SHORT).show();
+        HashMap<String,String> eventParams = new HashMap<String,String>();
+        eventParams.put("username", DataStore.getInstance().fetchUserName());
+        eventParams.put("error", apiException.getErrorMessage(apiException.getErrorCode()));
+
+        AnalyticsServiceManager.getInstance().pushAnalyticsEvent("refresh_session_failure",eventParams);
+
+    }
+
+    @Override
+    public void onRefreshTokenSucess(Login data) {
+
+        DataStore.getInstance().storeUserSessionDetails(data);
+        makeProfilesRequest();
+
+
+        HashMap<String,String> eventParams = new HashMap<String,String>();
+        eventParams.put("username", DataStore.getInstance().fetchUserName());
+        AnalyticsServiceManager.getInstance().pushAnalyticsEvent("refresh_session_success",eventParams);
+
+
+    }
+    
+    
+    
+    
+Now when the profiles are populated , user can call loginWithProfile function on profile click and get following callbacks
+
+	@Override
+    public void onProfileLoginSuccess(Login data) {
+
+        Intent in = new Intent(ProfilesActivity.this, HomeActivity.class);
+        startActivity(in);
+
+        finish();
+    }
+
+
+    @Override
+    public void onProfileLoginFailure(CustomException apiException) 
+    {
+     
+
+        Toast.makeText(this,"Unable to fetch profiles",Toast.LENGTH_SHORT).show();
+    }
+    
+    
+
 
 
 Note : RequestType is an enum differentiating the request ;
@@ -91,8 +169,10 @@ It has following values and can be scaled in future.
     LOGIN_WTH_PROFILE_ID,
     REFRESH_TOKEN
 
-Following are the callbacks received from the Callback Manager class:
-public void onLoginSuccess(Login liveData);
+Following are all the callbacks received from the Callback Manager class
+
+
+        public void onLoginSuccess(Login liveData);
 
 
         public void onLoginFailure(CustomException apiException);
@@ -109,21 +189,13 @@ public void onLoginSuccess(Login liveData);
 
         public void onRefreshTokenSucess(Login data);
 
-        public void onRefreshTokenFailure(CustomException apiException);
-
-
-Whenever you get a ProfileFailure, call RefreshToken to get the new token.
-
-
-
+        public void onRefreshTokenFailure(CustomException apiException);}
+	
+	
+User can save the data on his end (the tokens,credentials) and encrypt them the way it needs to.
 
 
 
-
-   
-
-
-    }
 
 
 
